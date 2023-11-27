@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import MoviePoster from "./components/MoviePoster";
 import MovieInfo from "./components/MovieInfo";
-import Search from "./components/Search";
-import Detail from "./components/Detail";
+import Search from "./components/search";
+import Detail from "./components/detail";
 import "./App.css";
 
 // interface para el genero
@@ -13,6 +13,8 @@ export interface movieResult {
   poster_path: string,
   vote_average: number,
   overview: string,
+  release_date: string,
+
 }
 
 
@@ -110,6 +112,7 @@ function App() { //componente padre
                 key={e.id}
                 posterPath={e.poster_path}
                 title={e.title}
+                releaseDate={e.release_date}
                 onClick={() => openDetail(e.id)}
               />
             ))}
