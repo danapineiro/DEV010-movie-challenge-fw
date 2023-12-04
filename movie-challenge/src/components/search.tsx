@@ -13,6 +13,7 @@ function Search(props: Props) {
         type="text"
         placeholder="Find Your Favorite Movie..."
         className="search"
+        name="searchInput"
         onChange={props.searchInput}
         onKeyPress={props.search}
       />

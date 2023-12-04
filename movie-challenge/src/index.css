@@ -35,6 +35,14 @@ h1 {
   line-height: 1.1;
 }
 
+h2 {
+  font-size: 1em;
+}
+
+h4 {
+  font-size:x-small;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
