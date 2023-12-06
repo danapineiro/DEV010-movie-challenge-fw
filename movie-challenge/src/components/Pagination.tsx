@@ -14,6 +14,7 @@ interface PaginationProps {
     const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
   
     const pages = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);  
+
     const handlePrevClick = () => {
       if (currentPage > 1) {
         onPageChange(currentPage - 1);
@@ -28,20 +29,21 @@ interface PaginationProps {
     //console.log('Renderizando componentes...');
 
     return (
-      <div>
-        <button disabled={currentPage === 1} onClick={handlePrevClick}>
+      <section className="Btns">
+        <button className= "BtnPrev" disabled={currentPage === 1} onClick={handlePrevClick}>
           Prev
         </button>
-        <p>Current Page: {currentPage}</p>
+        {/*<p>Current Page: {currentPage}</p>*/}
         {pages.map((page) => (
-          <button key={page} onClick={() => onPageChange(page)}>
+          <button className= "BtnPag" key={page} onClick={() => onPageChange(page)}>
             {page}
           </button>
         ))}
-        <button disabled={currentPage === totalPages} onClick={handleNextClick}>
+        <button className= "BtnNext"disabled={currentPage === totalPages} onClick={handleNextClick}>
           Next
         </button>
-      </div>
+
+      </section>
     );
   };
   export default Pagination;

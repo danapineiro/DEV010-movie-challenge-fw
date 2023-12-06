@@ -13,13 +13,21 @@ header {
 	width: 100%;
 	padding-top: 2rem;
 	padding-bottom: 1rem;
+	position:relative;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background: linear-gradient(to right, #6F1AB6, #FF0032);
+	padding: 1px; 
+	text-align: center;
+
 }
 
 header h1 {
-	color: #C77DFF;
+	color: #ffffff;
 	font-size: 4rem;
 	font-weight: 700;
-	text-align:left;
+	text-align:center;
 }
 
 main {
@@ -38,6 +46,7 @@ main {
 .item {
 	width: 20rem;
 	text-align: left;
+
 }
 
 .results {
@@ -178,23 +187,17 @@ main {
 	/* display: inline-block; */
 	padding: 15px 30px;
 	font-size: 18px;
-	/* margin-top: 3rem;
-margin-right: 2rem;
-margin-bottom: 1rem; */
 	font-weight: 700;
-	background: #9D4EDD;
-	color: #fff;
-	/* border-radius: 8px; */
+    background: linear-gradient(to right, #6F1AB6, #FF0032);	color: #fff;
 	border: none;
 	outline: none;
 	appearance: none;
 	cursor: pointer;
 	transition: 0.4s ease-out;
-
-	width: 100%;
+	width: 15%;
 	display: flex;
 	margin: auto;
-	margin-top: 5rem;
+	/*margin-top: 5rem;*/
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
@@ -303,6 +306,6 @@ margin-bottom: 1rem; */
 		left: 0;
 		width: 100%;
 		background-color: #333;
-		padding: 2px; 
+		padding: 1px; 
 		text-align: center;
 	  }

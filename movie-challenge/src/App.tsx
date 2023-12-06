@@ -57,7 +57,7 @@ function App() {
   const search = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
     // Llama a la función de búsqueda
-    performSearch();
+    getAppCatalog();
   }
 };
 
@@ -110,20 +110,26 @@ const performSearch = () => {
   };
 
    // Función para cambiar la página de resultados
-   const handlePageChange = (page: number) => {
-    // Hace la solicitud a la API para obtener resultados de la página seleccionada
-    const params:iParams = {
-      page:page
-    }
-    if(state.movieName.trim() !== "") params.query = state.movieName
-    axios(apiurl + "/discover/movie", {
+
+const handlePageChange = (page: number) => {
+  // Hace la solicitud a la API para obtener resultados de la página seleccionada
+  const params: iParams = {
+    page: page
+  };
+
+  if (state.movieName.trim() !== "") {
+    params.query = state.movieName;
+
+    // Si search tiene información, utiliza la ruta de búsqueda ("/search/movie")
+     // axios(apiurl + "/search/movie", {  //si tiene algo search
+    axios(apiurl + "/search/movie", {   //si search esta vacio utiliza discover
       headers: headers,
       params: params
     }).then(({ data }) => {
-      console.log(data)
+      console.log(data);
       const results: movieResult[] = data.results;
       // Actualiza el estado con los nuevos resultados y la página actual
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         results: results,
         currentPage: page,
@@ -132,7 +138,27 @@ const performSearch = () => {
     .catch((error) => {
       console.error("Error al cambiar de página:", error);
     });
+  } else {
+    // Si search está vacío, utiliza la ruta de descubrimiento ("/discover/movie")
+    axios(apiurl + "/discover/movie", {
+      headers: headers,
+      params: params
+    }).then(({ data }) => {
+      console.log(data);
+      const results: movieResult[] = data.results;
+      // Actualiza el estado con los nuevos resultados y la página actual
+      setState((prevState) => ({
+        ...prevState,
+        results: results,
+        currentPage: page,
+      }));
+    })
+    .catch((error) => {
+      console.error("Error al cambiar de página:", error);
+    });
+  }
 };
+
 
   // Función para obtener el catálogo inicial de películas
   const getAppCatalog = () => {
@@ -181,6 +207,7 @@ if (state.movieName) fetchData();
       {/* Componentes de encabezado y búsqueda */}
       <header className="App-header">
         <h1>Fun Films</h1>
+        <h2> TIMELINE</h2>
       </header>
       <main>
         <Search searchInput={searchInput} search={search} />
