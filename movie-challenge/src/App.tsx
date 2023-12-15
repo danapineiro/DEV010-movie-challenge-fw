@@ -46,15 +46,19 @@ function App() {
 
   // Función para manejar el cambio en el cuadro de búsqueda
   const searchInput = (e: React.FormEvent<HTMLInputElement>) => {
+    // Obtiene el valor actual del input
     const s = e.currentTarget.value;
-
+  
+    // Actualiza el estado del componente utilizando la función de actualización del estado
     setState((prevState) => {
+      // Retorna un nuevo objeto de estado con la propiedad 'movieName' actualizada
       return { ...prevState, movieName: s };
     });
   };
-
+  
     // Función para realizar la búsqueda al presionar Enter
   const search = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      // Verifica si la tecla presionada es "Enter"
     if (e.key === "Enter") {
     // Llama a la función de búsqueda
     getAppCatalog();
@@ -110,61 +114,52 @@ const performSearch = () => {
   };
 
    // Función para cambiar la página de resultados
-
 const handlePageChange = (page: number) => {
   // Hace la solicitud a la API para obtener resultados de la página seleccionada
   const params: iParams = {
     page: page
   };
-
+let endPoint = "/search/movie";
+  // Verifica si hay un término de búsqueda (state.movieName no está vacío)
   if (state.movieName.trim() !== "") {
     params.query = state.movieName;
 
     // Si search tiene información, utiliza la ruta de búsqueda ("/search/movie")
      // axios(apiurl + "/search/movie", {  //si tiene algo search
-    axios(apiurl + "/search/movie", {   //si search esta vacio utiliza discover
-      headers: headers,
-      params: params
-    }).then(({ data }) => {
-      console.log(data);
-      const results: movieResult[] = data.results;
-      // Actualiza el estado con los nuevos resultados y la página actual
-      setState((prevState) => ({
-        ...prevState,
-        results: results,
-        currentPage: page,
-      }));
-    })
-    .catch((error) => {
-      console.error("Error al cambiar de página:", error);
-    });
+    
+     // Si hay un término de búsqueda, utiliza la ruta de búsqueda ("/search/movie")
   } else {
-    // Si search está vacío, utiliza la ruta de descubrimiento ("/discover/movie")
-    axios(apiurl + "/discover/movie", {
-      headers: headers,
-      params: params
-    }).then(({ data }) => {
-      console.log(data);
-      const results: movieResult[] = data.results;
-      // Actualiza el estado con los nuevos resultados y la página actual
-      setState((prevState) => ({
-        ...prevState,
-        results: results,
-        currentPage: page,
-      }));
-    })
-    .catch((error) => {
-      console.error("Error al cambiar de página:", error);
-    });
+    // Si no hay un término de búsqueda, utiliza la ruta de descubrimiento ("/discover/movie")
+    endPoint = "/discover/movie"
   }
+
+    // Realiza una solicitud a la API utilizando axios
+  axios(apiurl + endPoint, { 
+    headers: headers,
+    params: params
+  }).then(({ data }) => {
+    console.log(data);
+    const results: movieResult[] = data.results;
+    // Actualiza el estado con los nuevos resultados y la página actual
+    setState((prevState) => ({
+      ...prevState,
+      results: results,
+      currentPage: page,
+    }));
+  })
+  .catch((error) => {
+    console.error("Error al cambiar de página:", error);
+  });
 };
 
 
   // Función para obtener el catálogo inicial de películas
   const getAppCatalog = () => {
+      // Realiza una solicitud a la API para obtener el catálogo inicial de aplicaciones
     axios(apiurl + initialCatalog, {
       headers: headers
     }).then(({ data }) => {
+      // Actualiza el estado con los resultados del catálogo y el número total de páginas
       setState((prevState) => {
         return { ...prevState, results: data.results, totalPages:data.total_pages }
       });
@@ -203,11 +198,11 @@ if (state.movieName) fetchData();
 
    // Renderiza el componente principal
    return (
-    <div className="App">
+    <section className="App">
       {/* Componentes de encabezado y búsqueda */}
       <header className="App-header">
-        <h1>Fun Films</h1>
-        <h2> TIMELINE</h2>
+        <h1 className="title">Fun Films</h1>
+        <h2 className="subtitle"> TIMELINE</h2>
       </header>
       <main>
         <Search searchInput={searchInput} search={search} />
@@ -215,7 +210,7 @@ if (state.movieName) fetchData();
 
 
         {/* Lista de resultados de películas */}
-        <div className="container">
+        <section className="container">
           {state.results.length &&
             state.results.map((e: movieResult) => (
               <div key={e.id}>
@@ -228,9 +223,9 @@ if (state.movieName) fetchData();
                 <MovieInfo title={e.title} release_date={e.release_date} />
               </div>
             ))}
-        </div>
+        </section>
 {/* Componente de paginación en el pie de página */}
-<div className="footer">
+<section className="footer">
 <footer className="pagination-footer">
             <Pagination
               currentPage={state.currentPage}
@@ -238,21 +233,21 @@ if (state.movieName) fetchData();
               onPageChange={handlePageChange}
             />
           </footer>
-          </div>
+          </section>
 
         {/* Detalles de la película seleccionada */}
         {typeof state.selected.title !== "undefined" ? (
-          <div>
+          <section>
             <MovieInfo title={state.selected.title} 
             release_date={state.selected.release_date}
              />
             <Detail selected={state.selected} closeDetail={closeDetail} />
-          </div>
+          </section>
         ) : (
           false
         )}
       </main>
-    </div>
+    </section>
   );
 }
 
